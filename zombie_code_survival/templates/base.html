@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title or 'Code Survival: Zombie Apocalypse' }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body class="apocalypse-terminal">
+    <div class="scanlines"></div>
+    <div class="noise"></div>
+
+    <nav class="top-nav">
+        <div>
+            {% if survivor %}
+            <span class="glitch-text">SURVIVOR: {{ survivor.username }}</span>
+            {% endif %}
+        </div>
+        <div>
+            <a href="{{ url_for('main.leaderboard') }}" class="nav-link">[SURVIVOR RANKINGS]</a>
+            {% if 'survivor_id' in session %}
+            <a href="{{ url_for('main.logout') }}" class="nav-link" style="margin-left: 20px;">[SWITCH IDENTITY]</a>
+            {% endif %}
+        </div>
+    </nav>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    {% for category, message in messages %}
+    <div class="feedback {{ category }}">
+        <span class="feedback-icon">{{ '✓' if category == 'correct' else '✗' if category == 'incorrect' else 'ℹ'
+            }}</span>
+        {{ message }}
+    </div>
+    {% endfor %}
+    {% endif %}
+    {% endwith %}
+
+    {% block content %}{% endblock %}
+
+    <script src="{{ url_for('static', filename='js/effects.js') }}"></script>
+</body>
+
+</html>

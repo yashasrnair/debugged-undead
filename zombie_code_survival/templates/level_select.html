@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <header>
+        <h1 class="glitch-text" data-text="SYSTEMS CONTROL">SYSTEMS CONTROL</h1>
+        <p>Welcome, Survivor <span style="color: var(--main-text-color);">{{ survivor.username }}</span></p>
+    </header>
+
+    <div style="margin: 30px 0;">
+        <p>The outbreak has corrupted our systems. Debug each system to restore functionality and synthesize the cure.
+        </p>
+        <p style="color: var(--info-color); margin-top: 10px;">
+            Systems solved: {{ solved_count }}/20
+        </p>
+    </div>
+
+    <div class="level-grid">
+        {% for challenge in challenges %}
+        <a href="{{ url_for('main.challenge', level=challenge.level) }}" class="level-btn 
+                  {{ 'solved' if challenge.is_solved }} 
+                  {{ 'current' if not challenge.is_solved and loop.index0 == solved_count }}
+                  {{ 'locked' if not challenge.is_solved and challenge.level > solved_count + 1 }}">
+            {{ challenge.level }}
+        </a>
+        {% endfor %}
+    </div>
+
+    <div style="margin-top: 40px; text-align: center;">
+        <a href="{{ url_for('main.briefing') }}" class="nav-link">[VIEW BRIEFING]</a>
+        {% if solved_count == 20 %}
+        <a href="{{ url_for('main.finished') }}" class="nav-link" style="margin-left: 20px;">[ACCESS SAFE ROOM]</a>
+        {% endif %}
+    </div>
+</div>
+
+<style>
+    .level-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+        gap: 15px;
+        margin: 30px 0;
+    }
+
+    .level-btn {
+        aspect-ratio: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: rgba(10, 15, 10, 0.7);
+        border: 2px solid var(--border-color);
+        color: var(--secondary-text-color);
+        text-decoration: none;
+        font-size: 1.2em;
+        transition: all 0.3s ease;
+    }
+
+    .level-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(57, 255, 20, 0.2);
+    }
+
+    .level-btn.solved {
+        border-color: var(--solved-color);
+        color: var(--solved-color);
+        box-shadow: 0 0 10px var(--solved-glow);
+    }
+
+    .level-btn.current {
+        border-color: var(--main-text-color);
+        color: var(--main-text-color);
+        box-shadow: 0 0 15px var(--glow-color);
+        animation: pulse 2s infinite;
+    }
+
+    .level-btn.locked {
+        border-color: var(--locked-color);
+        color: var(--locked-color);
+        cursor: not-allowed;
+        opacity: 0.5;
+    }
+
+    .level-btn.locked:hover {
+        transform: none;
+        box-shadow: none;
+    }
+
+    @keyframes pulse {
+        0% {
+            box-shadow: 0 0 5px var(--glow-color);
+        }
+
+        50% {
+            box-shadow: 0 0 20px var(--glow-color);
+        }
+
+        100% {
+            box-shadow: 0 0 5px var(--glow-color);
+        }
+    }
+</style>
+{% endblock %}

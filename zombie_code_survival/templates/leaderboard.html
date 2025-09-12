@@ -1,0 +1,173 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+    <header>
+        <h1>LEADERBOARD</h1>
+        <p class="subtitle">Top Agents by Completion Time</p>
+    </header>
+
+    <div class="leaderboard-content">
+        {% for survivor_data in survivors %}
+        <div class="leaderboard-entry {% if loop.index <= 3 %}top-{{ loop.index }}{% endif %}">
+            <div class="rank-badge">
+                <span class="rank-number">{{ loop.index }}</span>
+                {% if loop.index == 1 %}🥇{% elif loop.index == 2 %}🥈{% elif loop.index == 3 %}🥉{% endif %}
+            </div>
+
+            <div class="agent-info">
+                <h3 class="agent-name">{{ survivor_data.survivor.username }}</h3>
+                <p class="total-time">Total Time: {{ survivor_data.completion_time }}</p>
+            </div>
+
+            <div class="level-times">
+                <h4>Level Completion Times:</h4>
+                <div class="level-grid">
+                    {% for level in range(1, 21) %}
+                    <div class="level-item">
+                        <span class="level-label">L{{ level }}</span>
+                        <span class="level-time">
+                            {% if level in survivor_data.level_times %}
+                            {{ survivor_data.level_times[level] }}s
+                            {% else %}
+                            -
+                            {% endif %}
+                        </span>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <div class="no-data">
+            <p>No survivors have completed all challenges yet!</p>
+            <p>Be the first to complete all 20 levels!</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<style>
+    .leaderboard-content {
+        max-width: 1000px;
+        margin: 0 auto;
+    }
+
+    .leaderboard-entry {
+        background: rgba(0, 0, 0, 0.3);
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 20px;
+        display: flex;
+        gap: 20px;
+        align-items: flex-start;
+    }
+
+    .leaderboard-entry.top-1 {
+        background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(255, 215, 0, 0.05));
+        border-color: gold;
+        box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+    }
+
+    .leaderboard-entry.top-2 {
+        background: linear-gradient(135deg, rgba(192, 192, 192, 0.1), rgba(192, 192, 192, 0.05));
+        border-color: silver;
+        box-shadow: 0 0 15px rgba(192, 192, 192, 0.2);
+    }
+
+    .leaderboard-entry.top-3 {
+        background: linear-gradient(135deg, rgba(205, 127, 50, 0.1), rgba(205, 127, 50, 0.05));
+        border-color: #cd7f32;
+        box-shadow: 0 0 15px rgba(205, 127, 50, 0.2);
+    }
+
+    .rank-badge {
+        text-align: center;
+        min-width: 60px;
+    }
+
+    .rank-number {
+        font-size: 2rem;
+        font-weight: bold;
+        display: block;
+    }
+
+    .agent-info {
+        flex: 1;
+    }
+
+    .agent-name {
+        color: var(--main-text-color);
+        margin: 0 0 5px 0;
+        font-size: 1.5rem;
+    }
+
+    .total-time {
+        color: var(--solved-color);
+        margin: 0;
+        font-size: 1.1rem;
+    }
+
+    .level-times {
+        flex: 2;
+    }
+
+    .level-times h4 {
+        margin: 0 0 10px 0;
+        color: var(--main-text-color);
+    }
+
+    .level-grid {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 8px;
+    }
+
+    .level-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 5px 10px;
+        background: rgba(0, 0, 0, 0.2);
+        border-radius: 4px;
+        font-size: 0.9rem;
+    }
+
+    .level-label {
+        color: var(--main-text-color);
+        font-weight: bold;
+    }
+
+    .level-time {
+        color: var(--solved-color);
+    }
+
+    .no-data {
+        text-align: center;
+        padding: 40px;
+        color: var(--main-text-color);
+    }
+
+    .no-data p {
+        margin: 10px 0;
+    }
+
+    .subtitle {
+        text-align: center;
+        color: var(--main-text-color);
+        margin-bottom: 30px;
+        opacity: 0.8;
+    }
+
+    @media (max-width: 768px) {
+        .leaderboard-entry {
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .level-grid {
+            grid-template-columns: repeat(3, 1fr);
+        }
+    }
+</style>
+{% endblock %}

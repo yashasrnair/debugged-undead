@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <h1 class="glitch-text" data-text="CODE SURVIVAL: ZOMBIE APOCALYPSE">CODE SURVIVAL: ZOMBIE APOCALYPSE</h1>
+    
+    <div class="typewriter-container" style="margin: 30px 0;">
+        <p class="typewriter">The outbreak has left systems in chaos. We need your coding skills to restore critical systems and synthesize the cure...</p>
+    </div>
+    
+    <div style="text-align: center; margin: 40px 0;">
+        <form method="POST" class="entry-form">
+            <div class="form-group">
+                <label for="username" class="form-label">ENTER SURVIVOR ID:</label>
+                <input type="text" id="username" name="username" class="form-input" required autocomplete="off">
+            </div>
+            <button type="submit" class="start-btn">BEGIN MISSION</button>
+        </form>
+    </div>
+    
+    <div style="border-top: 1px solid var(--rust-color); padding-top: 20px; margin-top: 30px;">
+        <p style="color: var(--info-color);">⚠️ 20 coding challenges stand between humanity and extinction</p>
+        <p style="color: var(--info-color);">⚠️ Debug Python code to restore systems</p>
+        <p style="color: var(--info-color);">⚠️ Synthesize the cure in the safe room</p>
+    </div>
+</div>
+{% endblock %}

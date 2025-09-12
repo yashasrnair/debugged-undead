@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container challenge-container">
+    <div class="challenge-header">
+        <div class="level-indicator">SYSTEM {{ challenge.level }}/20</div>
+        <div class="error-type">ERROR: {{ challenge.error_type|upper }}</div>
+    </div>
+
+    <div>
+        <h3>DEBUG THE CODE:</h3>
+        <p style="margin-bottom: 15px; color: var(--secondary-text-color);">
+            This system contains buggy code. Identify and fix the {{ challenge.error_type }} error to restore
+            functionality.
+        </p>
+    </div>
+
+    <form method="POST">
+        <div class="code-container">
+            <textarea name="code" class="code-editor" autocomplete="off" autocorrect="off" autocapitalize="off"
+                spellcheck="false">{{ challenge.buggy_code }}</textarea>
+        </div>
+
+        <button type="submit" class="submit-btn">EXECUTE CODE</button>
+    </form>
+
+    <div style="margin-top: 30px;">
+        <h4>SYSTEM NAVIGATION:</h4>
+        <div class="level-grid">
+            {% for c in all_challenges %}
+            <a href="{{ url_for('main.challenge', level=c.level) }}" class="level-btn 
+                {{ 'solved' if c.is_solved }} 
+                {{ 'current' if c.level == challenge.level }}
+                {{ 'locked' if not c.is_solved and c.level > challenge.level and not challenge.is_solved }}">
+                {{ c.level }}
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

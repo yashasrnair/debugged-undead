@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container" style="text-align: center;">
+    <header>
+        <h1 style="color: var(--solved-color); text-shadow: 0 0 10px var(--solved-glow);">DEBUGGED & UNDEAD</h1>
+    </header>
+    <div style="font-size: 1.5rem; line-height: 1.8;">
+        <p>Congratulations, Agent <strong style="color: var(--main-text-color);">{{ survivor.username }}</strong>!</p>
+        <p>You have successfully neutralized the virus.</p>
+        <p>Your total mission time was:</p>
+        <p style="font-size: 2.5rem; color: var(--main-text-color); margin: 20px 0;">{{ survivor.get_completion_time()
+            }}
+        </p>
+        <a href="{{ url_for('main.leaderboard') }}" class="button"
+            style="background-color: var(--solved-color); border-color: var(--solved-glow);">View Leaderboard</a>
+    </div>
+    <!-- Animated Signature Start -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap" rel="stylesheet">
+    <div id="signature" class="fancy-signature"></div>
+    <style>
+        .fancy-signature {
+            margin-top: 40px;
+            font-family: 'Orbitron', monospace, sans-serif;
+            font-size: 0.9rem;
+            background: linear-gradient(90deg, #00ff88, #39ff14, #00ff88, #39ff14);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradientMove 4s linear infinite;
+            text-shadow: 0 0 12px #39ff14, 0 0 24px #00ff88, 0 0 2px #fff;
+            min-height: 2em;
+            letter-spacing: 2px;
+            transition: font-size 0.2s;
+            font-weight: 700;
+            user-select: none;
+        }
+
+        @keyframes gradientMove {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            100% {
+                background-position: 100% 50%;
+            }
+        }
+
+        .fancy-signature .pulse-heart {
+            display: inline-block;
+            animation: pulse 1s infinite;
+            color: #39ff14;
+            filter: drop-shadow(0 0 8px #39ff14);
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.25);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+    </style>
+    <script>
+        const text = 'Made with <span class="pulse-heart">💚</span> by Yashas R Nair | github.com/yashasrnair/ | 2025';
+        let i = 0;
+        function typeWriter() {
+            const sig = document.getElementById("signature");
+            if (i < text.length) {
+                // Handle HTML tags in the text
+                if (text[i] === '<') {
+                    const close = text.indexOf('>', i);
+                    sig.innerHTML += text.slice(i, close + 1);
+                    i = close + 1;
+                } else {
+                    sig.innerHTML += text.charAt(i);
+                    i++;
+                }
+                setTimeout(typeWriter, 45);
+            } else {
+                // Make the github part a link after typing
+                sig.innerHTML = sig.innerHTML.replace(
+                    /github\.com\/yashasrnair\//,
+                    '<a href="https://github.com/yashasrnair/" target="_blank" style="color:inherit; text-decoration:underline;">github.com/yashasrnair/</a>'
+                );
+            }
+        }
+        window.addEventListener('DOMContentLoaded', typeWriter);
+    </script>
+    <!-- Animated Signature End -->
+</div>
+{% endblock %}

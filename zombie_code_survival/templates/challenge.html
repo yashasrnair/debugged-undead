@@ -10,8 +10,8 @@
     <div>
         <h3>DEBUG THE CODE:</h3>
         <p style="margin-bottom: 15px; color: var(--secondary-text-color);">
-            This system contains buggy code. Identify and fix the {{ challenge.error_type }} error to restore
-            functionality.
+            This system contains buggy C++ code. Fix and run it. Use the optional <strong>stdin</strong> field if the
+            program reads input.
         </p>
     </div>
 
@@ -21,8 +21,29 @@
                 spellcheck="false">{{ challenge.buggy_code }}</textarea>
         </div>
 
+        <div style="margin: 10px 0;">
+            <label style="display:block; margin-bottom:6px; color:var(--main-text-color);">stdin (optional):</label>
+            <input name="stdin"
+                style="width:100%; padding:10px; border:1px solid var(--border-color); background:rgba(0,0,0,0.5); color:var(--main-text-color);"
+                placeholder="e.g. 5">
+        </div>
+
         <button type="submit" class="submit-btn">EXECUTE CODE</button>
     </form>
+
+    {% if session.last_run_phase %}
+    <div style="margin-top: 20px;">
+        <h4>Execution Results ({{ session.last_run_phase|upper }}):</h4>
+        <div class="feedback info">
+            <strong>Stdout:</strong>
+            <pre style="white-space: pre-wrap;">{{ session.last_run_stdout }}</pre>
+        </div>
+        <div class="feedback incorrect">
+            <strong>Stderr / Compiler:</strong>
+            <pre style="white-space: pre-wrap;">{{ session.last_run_stderr }}</pre>
+        </div>
+    </div>
+    {% endif %}
 
     <div style="margin-top: 30px;">
         <h4>SYSTEM NAVIGATION:</h4>
